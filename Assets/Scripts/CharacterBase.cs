@@ -2,19 +2,34 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CharacterBase : MonoBehaviour
+public abstract class CharacterBase : MonoBehaviour
 {
+    public int MaxHP => _maxHp;
     public int HP => _hp;
     public int Attack => _attack;
     public int Defence => _defence;
     public int Gold => _gold;
     public int Exp => _exp;
 
-    protected int _hp;
-    protected int _attack;
-    protected int _defence;
-    protected int _gold;
-    protected int _exp;
+    [SerializeField]
+    protected int _maxHp = 100;
+
+    [SerializeField]
+    protected int _hp = 100;
+
+    [SerializeField]
+    protected int _attack = 10;
+
+    [SerializeField]
+    protected int _defence = 5;
+
+    [SerializeField]
+    protected int _gold = 10;
+
+    [SerializeField]
+    protected int _exp = 10;
+
+    protected abstract void Awake();
 
     public virtual void AddDamage(int damage)
     {
@@ -25,5 +40,10 @@ public class CharacterBase : MonoBehaviour
         }
 
         _hp -= d;
+
+        if(_hp < 0)// HP‚ª–³‚­‚È‚Á‚½‚ç
+        {
+
+        }
     }
 }

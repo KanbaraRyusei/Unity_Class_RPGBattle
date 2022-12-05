@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System;
 
 public class PlayerView : MonoBehaviour
 {
@@ -21,9 +22,16 @@ public class PlayerView : MonoBehaviour
     [SerializeField]
     private TMP_Text _expText;
 
-    public void SetMaxHPValue(float value)
+    [SerializeField]
+    private List<Button> _buttons;
+
+    public void SetValues(float value, string atk, string def, string gold, string exp)
     {
         _hpSlider.maxValue = value;
+        _attackText.text = atk;
+        _defenceText.text = def;
+        _goldText.text = gold;
+        _expText.text = exp;
     }
 
     public void SetHPValue(float value)
@@ -49,5 +57,43 @@ public class PlayerView : MonoBehaviour
     public void SetExpText(string text)
     {
         _expText.text = text;
+    }
+
+    public void SetButton(int needNum)
+    {
+        if(_buttons.Count < needNum)
+        {
+            for(int i = 0; i < needNum - _buttons.Count; i++)
+            {
+                var b = Instantiate(_buttons[0]);
+                _buttons.Add(b);
+            }
+        }
+
+        foreach(var b in _buttons)
+        {
+            b.gameObject.SetActive(false);
+        }
+
+        for(int i = 0; i < needNum; i++)
+        {
+            _buttons[i].gameObject.SetActive(true);
+        }
+    }
+
+    public void SetButtonText(string[] texts)
+    {
+        for(int i = 0; i < texts.Length; i++)
+        {
+            _buttons[i].GetComponent<TMP_Text>().text = texts[i];
+        }
+    }
+
+    public void SetButtonAction(Action[] actions)
+    {
+        for(int i = 0; i < _buttons.Count; i++)
+        {
+            _buttons[i].onClick.AddListener(() => actions[i].Invoke());
+        }
     }
 }
